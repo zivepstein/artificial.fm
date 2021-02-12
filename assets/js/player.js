@@ -9,7 +9,7 @@
  */
 
 // Cache references to DOM elements.
-var elms = ['track', 'timer', 'duration', 'playBtn', 'pauseBtn', 'prevBtn', 'nextBtn', 'playlistBtn', 'volumeBtn', 'progress', 'bar', 'wave', 'loading', 'playlist', 'list', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
+var elms = ['track', 'timer', 'duration', 'playBtn', 'pauseBtn', 'prevBtn', 'nextBtn', 'playlistBtn', 'volumeBtn', 'progress', 'bar', 'wave', 'loading', 'playlist', 'list', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'loveBtn'];
 elms.forEach(function(elm) {
   window[elm] = document.getElementById(elm);
 });
@@ -80,6 +80,7 @@ Player.prototype = {
           wave.container.style.display = 'none';
           bar.style.display = 'block';
           self.skip('next');
+          $('#love').attr("src", $('#love').attr("src").replace("full", "hover"));
         },
         onpause: function() {
           // Stop the wave animation.
@@ -287,14 +288,20 @@ var player = new Player([
 playBtn.addEventListener('click', function() {
   player.play();
 });
+loveBtn.addEventListener('click', function() {
+  console.log($('#love'))
+  $('#love').attr("src", $('#love').attr("src").replace("hover", "full"));
+});
 pauseBtn.addEventListener('click', function() {
   player.pause();
 });
 prevBtn.addEventListener('click', function() {
   player.skip('prev');
+   $('#love').attr("src", $('#love').attr("src").replace("full", "hover"));
 });
 nextBtn.addEventListener('click', function() {
   player.skip('next');
+  $('#love').attr("src", $('#love').attr("src").replace("full", "hover"));
 });
 waveform.addEventListener('click', function(event) {
   player.seek(event.clientX / window.innerWidth);

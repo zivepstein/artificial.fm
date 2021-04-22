@@ -41,39 +41,14 @@ body {
   font-weight: 400;
   color: black;
 }
-/*#duration {
-  position: absolute;
-  top: 0;
-  right: 3%;
-  text-align: right;
-  font-size: 26px;
-  opacity: 0.5;
-  font-weight: 300;
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.33);
-}*/
+
 
 /* Controls */
 .controlsOuter {
   position: absolute;
   width: 100%;
   height: 70px;
-  top: 12%;
-}
-
-.subjectiveOuter {
-  position: absolute;
-  width: 100%;
-  bottom: 30%;
-  margin-left: 33%;
-  line-height: 34px;
-  text-align: center;
-  font-size: 34px;
-  font-weight: 400;
-  color: black;
-  max-width: 500px;
-  border-style: solid;
-  background-color: rgba(255,255,255,0.6)
+  top: 20%;
 }
 .controlsInner {
   position: absolute;
@@ -135,7 +110,7 @@ body {
   width: 35px;
   height: 35px;
   top: 50%;
-  right: 7%;
+  left: 3%;
   background-color: black;
   margin: -17.5px auto;
 }
@@ -343,46 +318,3 @@ body {
   from { opacity: 1; }
   to   { opacity: 0; }
 }
-
-*{
-    margin: 0;
-    padding: 0;
-}
-.rate {
-    float: left;
-    height: 46px;
-    margin-left: 33%;
-    margin-top: 2%;
-}
-.rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-}
-.rate:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:30px;
-    color:#ccc;
-}
-.rate:not(:checked) > label:before {
-    content: '★ ';
-}
-.rate > input:checked ~ label {
-    color: ;    
-}
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-    color: black;  
-}
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-    color: black;
-}
-
-/* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */

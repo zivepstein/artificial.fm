@@ -9,7 +9,7 @@
  */
 
 // Cache references to DOM elements.
-var elms = ['track', 'timer', 'duration', 'playBtn', 'pauseBtn', 'prevBtn', 'nextBtn', 'playlistBtn', 'volumeBtn', 'progress', 'bar', 'wave', 'loading', 'playlist', 'list', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
+var elms = ['track', 'timer', 'duration', 'playBtn', 'pauseBtn', 'prevBtn', 'nextBtn', 'playlistBtn', 'volumeBtn', 'progress', 'bar', 'wave', 'loading', 'playlist', 'list', 'volume', 'barEmpty', 'barFull', 'sliderBtn', 'loveBtn'];
 elms.forEach(function(elm) {
   window[elm] = document.getElementById(elm);
 });
@@ -54,8 +54,9 @@ Player.prototype = {
     if (data.howl) {
       sound = data.howl;
     } else {
+      console.log(data.file);
       sound = data.howl = new Howl({
-        // src: ['./audio/' + data.file + '.webm', './audio/' + data.file + '.mp3'],
+        // src: ['./audio/' + data.file + '.wav'],
         src: [data.file],
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
         onplay: function() {
@@ -66,31 +67,32 @@ Player.prototype = {
           requestAnimationFrame(self.step.bind(self));
 
           // Start the wave animation if we have already loaded
-          // wave.container.style.display = 'block';
+          wave.container.style.display = 'block';
           bar.style.display = 'none';
           pauseBtn.style.display = 'block';
         },
         onload: function() {
           // Start the wave animation.
-          // wave.container.style.display = 'block';
+          wave.container.style.display = 'block';
           bar.style.display = 'none';
           loading.style.display = 'none';
         },
         onend: function() {
           // Stop the wave animation.
-          // wave.container.style.display = 'none';
+          wave.container.style.display = 'none';
           bar.style.display = 'block';
           self.skip('next');
+          $('#love').attr("src", $('#love').attr("src").replace("full", "hover"));
         },
         onpause: function() {
           // Stop the wave animation.
-          // wave.container.style.display = 'none';
-          // bar.style.display = 'block';
+          wave.container.style.display = 'none';
+          bar.style.display = 'block';
         },
         onstop: function() {
           // Stop the wave animation.
-          // wave.container.style.display = 'none';
-          // bar.style.display = 'block';
+          wave.container.style.display = 'none';
+          bar.style.display = 'block';
         },
         onseek: function() {
           // Start upating the progress of the track.
@@ -269,43 +271,45 @@ Player.prototype = {
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   }
 };
-
+console.log("foo")
 // Setup our new audio player class and pass it the playlist.
 var player = new Player([
   {
-    title: 'Mary May Dolly Americana 1',
-    file: 'http://matlaberp2.media.mit.edu:8000/mary_may1_dollyparton_americana/level_2/item_1.wav',
+    title: 'So Bad',
+    file: 'http://matlaberp2.media.mit.edu:8000/outputs/mary_may1_prompted_dolly_americana/level_2/item_1.wav',
+    format: 'mp3',
     howl: null
   },
   {
-    title: 'Mary May Dolly Americana 2',
-    file: 'http://matlaberp2.media.mit.edu:8000/mary_may1_dollyparton_americana/level_2/item_2.wav',
-    howl: null
-  },
-  {
-    title: 'Mary May Dolly Americana 3',
-    file: 'http://matlaberp2.media.mit.edu:8000/mary_may1_dollyparton_americana/level_2/item_3.wav',
+    title: 'Country Garbage',
+    file: 'http://matlaberp2.media.mit.edu:8000/outputs/mary_may1_prompted_dolly_americana/level_2/item_2.wav',
+    format: 'mp3',
     howl: null
   }
 ]);
 
-var addListeners = function(){
 // Bind our player controls.
 playBtn.addEventListener('click', function() {
   player.play();
+});
+loveBtn.addEventListener('click', function() {
+  console.log($('#love'))
+  $('#love').attr("src", $('#love').attr("src").replace("hover", "full"));
 });
 pauseBtn.addEventListener('click', function() {
   player.pause();
 });
 prevBtn.addEventListener('click', function() {
   player.skip('prev');
+   $('#love').attr("src", $('#love').attr("src").replace("full", "hover"));
 });
 nextBtn.addEventListener('click', function() {
   player.skip('next');
+  $('#love').attr("src", $('#love').attr("src").replace("full", "hover"));
 });
-// waveform.addEventListener('click', function(event) {
-//   player.seek(event.clientX / window.innerWidth);
-// });
+waveform.addEventListener('click', function(event) {
+  player.seek(event.clientX / window.innerWidth);
+});
 playlistBtn.addEventListener('click', function() {
   player.togglePlaylist();
 });
@@ -349,7 +353,3 @@ var move = function(event) {
 
 volume.addEventListener('mousemove', move);
 volume.addEventListener('touchmove', move);
-
-}
-
-addListeners();

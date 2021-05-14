@@ -158,6 +158,7 @@ Player.prototype = {
     }
 
     self.skipTo(index);
+    foo(index);
   },
 
   /**
@@ -271,23 +272,7 @@ Player.prototype = {
 };
 
 // Setup our new audio player class and pass it the playlist.
-var player = new Player([
-  {
-    title: 'Mary May Dolly Americana 1',
-    file: 'http://matlaberp2.media.mit.edu:8000/mary_may1_dollyparton_americana/level_2/item_1.wav',
-    howl: null
-  },
-  {
-    title: 'Mary May Dolly Americana 2',
-    file: 'http://matlaberp2.media.mit.edu:8000/mary_may1_dollyparton_americana/level_2/item_2.wav',
-    howl: null
-  },
-  {
-    title: 'Mary May Dolly Americana 3',
-    file: 'http://matlaberp2.media.mit.edu:8000/mary_may1_dollyparton_americana/level_2/item_3.wav',
-    howl: null
-  }
-]);
+
 
 var addListeners = function(){
 // Bind our player controls.

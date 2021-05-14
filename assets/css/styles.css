@@ -75,6 +75,30 @@ body {
   border-style: solid;
   background-color: rgba(255,255,255,0.6)
 }
+
+.description {
+  position: absolute;
+  width: 100%;
+  max-height: 80% !important;
+  overflow-y: scroll;
+  max-width:28% !important;
+  top: 15%;
+  left:1%;
+  line-height: 34px;
+  font-size: 34px;
+  font-weight: 400;
+  color: black;
+  max-width: 500px;
+  border-style: solid;
+  background-color: rgba(255,255,255,0.6)
+}
+
+#text{
+  margin: 5%;
+  font-size: 65%;
+  line-height: normal;
+  text-align: left;
+}
 .controlsInner {
   position: absolute;
   width: 340px;
@@ -385,4 +409,15 @@ body {
     color: black;
 }
 
+.header{
+  margin:1%; position: absolute;
+}
+.navButton{
+  font-size: 110%
+}
+
 /* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
+
+#close_button{
+  left:0;
+}

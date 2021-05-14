@@ -158,7 +158,7 @@ Player.prototype = {
     }
 
     self.skipTo(index);
-    foo(index);
+    next_song(index);
   },
 
   /**

@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="user-scalable=no">
   <title>artificial.fm</title>
-  <link rel="stylesheet" href="./assets/css/styles.css">
-  <script src="./assets/js/main.js" type="text/javascript"></script>
-    <script src="./assets/js/metaball.js" type="text/javascript"></script>
-    <script src="./assets/js/shader.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+  <script src="{{ url_for('static', filename='js/main.js')}}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/metaball.js')}}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/shader.js')}}" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="./assets/css/magic-master/dist/magic.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/magic-master/dist/magic.min.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Metrophobic&display=swap" rel="stylesheet">
-    <script src="./assets/js/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
   <!-- Top Info -->
   <div class = "header">
-    <img src = "assets/img/afm_logo.png" width = "25%" id = "logo"><br>
+    <img src = "{{ url_for('static', filename='img/afm_logo.png')}}" width = "25%" id = "logo"><br>
     <span id= "about" class = "navButton">about</span> | <span id = "terms" class = "navButton">terms</span>  | <span id = "getinvolved" class = "navButton">get involved</span> 
   </div>
   
@@ -76,16 +76,21 @@
       </div>
   </div>
   <div class = "description" style=  "display:none;">
-    <img src = "assets/img/close.png" width = "5%" id = "close_button">
+    <img src = "{{ url_for('static', filename='img/close.png')}}" width = "5%" id = "close_button">
     <div id = "text">
     </div>
   </div>
 
   <!-- Scripts -->
-  <script src="./assets/js/howler.core.js"></script>
-  <script src="./assets/js/siriwave.js"></script>
-  <script src="./assets/js/player.js"></script>
+  <script src="{{ url_for('static', filename='js/howler.core.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/siriwave.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/player.js')}}"></script>
   <script>
+
+    var songList = {{ songs | tojson }};
+    var new_questions = ["How memorable is this song?","How happy is this song?","How danceable is this song?"]
+
+    $("#modality").attr("song" , songList[0]);
 
     $( "#terms" ).click(function() {
       $( ".description" ).show();
@@ -106,17 +111,34 @@
       $( ".description" ).hide();
     });
 
+    var next_song = function(x){
+      var current_url = songList[parseInt(x)];
+      $("#modality").attr("song" , current_url);
 
-
-
-    var foo = function(x){
-      console.log(x);
-      console.log("i am a dingus")
+      var new_questions = ["How memorable is this song?","How happy is this song?","How danceable is this song?"]
+      $("#modality").text(new_questions[0]);
+      $(".subjectiveOuter").removeClass('magictime spaceOutLeft');
+      $(".subjectiveOuter").addClass('magictime spaceInRight');
     }
-    var new_questions = ["How memorable is this song?","How happy is this song?","How danceable is this song?"]
+
     $( ".clickable" ).click(function() {
-       
-       setTimeout(function(){
+      console.log($("#modality").attr("song"));
+      console.log($("#modality").text()); 
+      console.log(this.textContent.charAt(0));
+
+      var params = {'url' : $("#modality").attr("song"),'question' : $("#modality").text(), "response" : this.textContent.charAt(0)}
+            $.ajax({
+            type: "POST",
+            url: "user_response",
+            data: params,
+            success: function(data){
+              console.log(data);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+              console.log("Status: " + textStatus); alert("Error: " + errorThrown);
+            }
+          });
+      setTimeout(function(){
         $(".subjectiveOuter").addClass('magictime spaceOutLeft');
 
       }, 500);
@@ -132,23 +154,14 @@
        }, 1500);
     } );
 
-    var player = new Player([
-      {
-        title: 'CC13 Nobide x Justin Bieber (classical)',
-        file: './assets/wav/Nobide_CC13_justinbieber_classical_item_1.wav',
-        howl: null
-      },
-      {
-        title: 'CC13 Nobide x Justin Bieber (soul)',
-        file: './assets/wav/Nobide_CC13_justinbieber_soul_item_0.wav',
-        howl: null
-      },
-      {
-        title: 'CC13 Nobide x Justin Bieber (electronic)',
-        file: './assets/wav/Nobide_CC13_justinbieber_electronic_item_1.wav',
-        howl: null
-      }
-    ]);
+    player_data = [];
+    for (var i = 0; i < songList.length; i++) {
+        var data = {"title" :i, 'file': songList[i], "howl":null};
+        player_data.push(data)
+    }
+    console.log(player_data)
+
+    var player = new Player(player_data);
 
     addListeners();
   </script>

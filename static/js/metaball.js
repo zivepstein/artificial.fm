@@ -2,7 +2,7 @@ class Metaball {
 	constructor() {
 		const size = Math.pow(Math.random(), 2);
 		this.vel = p5.Vector.random2D().mult(1 + (1 - size)/ 8);
-		this.radius = 100 * size + 20;
+		this.radius = 40 * size + 20;
 		
 		this.pos = new p5.Vector(width / 2, height / 2);
 	}

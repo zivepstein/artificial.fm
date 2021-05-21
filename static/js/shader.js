@@ -44,10 +44,10 @@ function getShader(_renderer) {
 				v += r * r / (dx * dx + dy * dy);
 			}
 
-			if (0.9 < v && v < 1.1) {
-				float a = (v - 0.9) * 4.;
+			if (0.2 < v && v < 1.8) {
+				float a = (v - 0.9) * 2.;
 				gl_FragColor = vec4(hsv2rgb(vec3(a, 1., 1.)), 1.0);
-			} else gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+			} else gl_FragColor = vec4(0,0, 0, 0);
 		}
 	`;
 	

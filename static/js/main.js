@@ -1,6 +1,6 @@
 let metaballShader;
 
-const N_balls = 20,
+const N_balls = 60,
 			metaballs = [];
 
 function preload() {
@@ -16,6 +16,7 @@ function setup() {
 
 function draw() {
 	var data = [];
+
 	
 	for (const ball of metaballs) {
 		ball.update();
@@ -23,7 +24,12 @@ function draw() {
 	}
 	
 	metaballShader.setUniform("metaballs", data);
+
 	rect(0, 0, width, height);
+	stroke(200);
+	line(0, 0, width, height);
+	stroke(100);
+	
 }
 
 // OpenProcessing has a bug where it always creates a scrollbar on Chromium.

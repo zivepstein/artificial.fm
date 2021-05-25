@@ -18,6 +18,6 @@ songs = list(records_df['url'].values)
 
 for song in songs:
 	try:
-		urllib.request.urlretrieve(song, '/home/host/myproject/static/music/batch1/{}'.format(song.split('/')[-1]))
+		urllib.request.urlretrieve(song, '/home/host/myproject/static/music/batch1/{}_{}'.format(song.split("/")[-3], song.split('/')[-1]))
 	except:
 		print("failed for song {}".format(song))

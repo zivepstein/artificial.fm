@@ -17,4 +17,4 @@ records_df = records_df.sample(frac=1).sort_values(['item'])
 songs = list(records_df['url'].values)
 
 for song in songs:
-    urllib.request.urlretrieve(url, '/home/host/myproject/static/music/batch1/{}'.format(.url.split('/')[-1]))
+    urllib.request.urlretrieve(url, '/home/host/myproject/static/music/batch1/{}'.format(url.split('/')[-1]))

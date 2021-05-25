@@ -17,4 +17,7 @@ records_df = records_df.sample(frac=1).sort_values(['item'])
 songs = list(records_df['url'].values)
 
 for song in songs:
-    urllib.request.urlretrieve(song, '/home/host/myproject/static/music/batch1/{}'.format(song.split('/')[-1]))
+	try:
+    	urllib.request.urlretrieve(song, '/home/host/myproject/static/music/batch1/{}'.format(song.split('/')[-1]))
+	except:
+		print("failed for song {}".format(song))

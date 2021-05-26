@@ -101,9 +101,23 @@
     var has_started = false;
 
     var songList = {{ songs | tojson }};
-    var new_questions = ["How memorable is this song?","How happy is this song?","How danceable is this song?"]
+    console.log(songList);
 
-    $("#modality").attr("song" , songList[0]);
+    player_data = [];
+    for (var i = 0; i < songList.length; i++) {
+        var data = {"title" :i, 'file': songList[i]['url'], "howl":null};
+        player_data.push(data)
+    }
+    console.log(player_data)
+    var player = new Player(player_data);
+    addListeners();
+
+    var questions = ["How happy is this song?","How danceable is this song?","How artificial is this song?", "How clear are the lyrics?", "How instrumental is this song?", "How upbeat is this song?"]
+
+    $("#modality").attr("song_id" , songList[0]['song_id']);
+    var local_questions = JSON.parse(JSON.stringify(questions))
+    local_questions = local_questions.sort(() => Math.random() - 0.5)
+    console.log(local_questions);
 
     $( "#terms" ).click(function() {
       $( ".description" ).show();
@@ -127,25 +141,25 @@
     $( "#playBtn" ).click(function() {
       $( ".rate" ).show();
       $( ".p5Canvas" ).show();
-       $("#modality").text("How realistic is this song?");
+       $("#modality").text(local_questions[0]);
+       $("#playBtn").css("animation-name" , "");
+
     });
 
     var next_song = function(x){
-      var current_url = songList[parseInt(x)];
-      $("#modality").attr("song" , current_url);
+      var current_id = songList[parseInt(x)]['song_id'];
+      $("#modality").attr("song_id" , current_id);
+      var local_questions = JSON.parse(JSON.stringify(questions))
+      local_questions = local_questions.sort(() => Math.random() - 0.5)
 
-      var new_questions = ["How memorable is this song?","How happy is this song?","How danceable is this song?"]
-      $("#modality").text(new_questions[0]);
+      $("#modality").text(local_questions[0]);
       $(".subjectiveOuter").removeClass('magictime spaceOutLeft');
       $(".subjectiveOuter").addClass('magictime spaceInRight');
     }
 
     $( ".clickable" ).click(function() {
-      console.log($("#modality").attr("song"));
-      console.log($("#modality").text()); 
-      console.log(this.textContent.charAt(0));
 
-      var params = {'url' : $("#modality").attr("song"),'question' : $("#modality").text(), "response" : this.textContent.charAt(0)}
+      var params = {'song_id' : $("#modality").attr("song_id"),'question' : $("#modality").text(), "response" : this.textContent.charAt(0)}
             $.ajax({
             type: "POST",
             url: "user_response",
@@ -163,8 +177,8 @@
       }, 500);
 
        setTimeout(function(){ 
-        if (new_questions.length>0){
-          var q  = new_questions.pop()
+        if (local_questions.length>0){
+          var q  = local_questions.pop()
           $("#modality").text(q);
           $(".subjectiveOuter").removeClass('magictime boingOutDown');
           $(".subjectiveOuter").addClass('magictime boingInUp');
@@ -173,16 +187,6 @@
        }, 1500);
     } );
 
-    player_data = [];
-    for (var i = 0; i < songList.length; i++) {
-        var data = {"title" :i, 'file': songList[i], "howl":null};
-        player_data.push(data)
-    }
-    console.log(player_data)
-
-    var player = new Player(player_data);
-
-    addListeners();
   </script>
 </body>
 </html>

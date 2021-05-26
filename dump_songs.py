@@ -25,7 +25,7 @@ if args.src == 'afm_songs':
 	query = "select * from afm_songs"
 	dat = sqlio.read_sql_query(query, conn)
 	for song in dat['url'].values:
-		urllib.request.urlretrieve(song, '/home/host/myproject/static/music/batch1/{}_{}'.format(song.split("/")[-3], song.split('/')[-1]))
+		urllib.request.urlretrieve(song, '/home/host/myproject/static/music/batch1/{}_{}'.format(song.split("/")[-3], song.split('/')[-1])) #todo: name songs as song_id instead of url
 elif args.src == "sheets":
 	scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 	creds = ServiceAccountCredentials.from_json_keyfile_name('creds.json', scope)

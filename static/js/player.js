@@ -45,12 +45,14 @@ Player.prototype = {
   play: function(index) {
     var self = this;
     var sound;
-
+    
     index = typeof index === 'number' ? index : self.index;
+    console.log(index);
+    console.log(self.playlist);
     var data = self.playlist[index];
-
     // If we already loaded this track, use the current one.
     // Otherwise, setup and load a new Howl.
+    console.log(data)
     if (data.howl) {
       sound = data.howl;
     } else {
@@ -98,6 +100,7 @@ Player.prototype = {
         }
       });
     }
+
 
     // Begin playing the sound.
     sound.play();

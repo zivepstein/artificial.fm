@@ -48,9 +48,8 @@ body {
   max-height: 80% !important;
   overflow-y: scroll;
   overflow-y:auto;
-  max-width:22vw !important;
-  top: 15%;
-  left:1%;
+ 
+  
   line-height: 34px;
   font-size: 2vw;
   font-weight: 400;
@@ -59,6 +58,7 @@ body {
   border-style: solid;
   background-color: rgba(255,255,255,0.6)
 }
+
 
 #text{
   margin: 5%;
@@ -91,7 +91,11 @@ body {
   height: calc(0.16541353 * var(--RadioHeight));
   left: 50%;
   margin: auto -34.5px;
-  filter(invert(1))
+  filter(invert(1));
+  animation-name: float;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
 }
 #pauseBtn {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAABGCAYAAACaGVmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTExIDc5LjE1ODMyNSwgMjAxNS8wOS8xMC0wMToxMDoyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDE4MjkzRjNDNzI0MTFFNTk2RTBDMTRBMkYyNjVGMzQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDE4MjkzRjRDNzI0MTFFNTk2RTBDMTRBMkYyNjVGMzQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBOERFOEQ1Q0M2QkQxMUU1OTZFMEMxNEEyRjI2NUYzNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowMTgyOTNGMkM3MjQxMUU1OTZFMEMxNEEyRjI2NUYzNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pne5d1AAAAB8SURBVHja7NCxCQAwAALBuP/QZoEUlinua0G4tD1j83Asv/4GChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFChQoUKBAgQIFCpRXV4ABAOgpXYTDYwEwAAAAAElFTkSuQmCC');
@@ -176,8 +180,8 @@ body {
   left: 0;
   width: 0%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
-  z-index: -1;
+  background-color: rgba(0, 0, 0, 0.05);
+  z-index: -1000;
 }
 
 /* Loading */
@@ -356,9 +360,9 @@ body {
     overflow:hidden;
     white-space:nowrap;
     cursor:pointer;
-    font-size:1.5vw;
     color:#ccc;
 }
+
 .rate:not(:checked) > label:before {
     content: '★ ';
 }
@@ -379,9 +383,8 @@ body {
 
 .nav{
   position: absolute;
-  font-size: 1vw;
-  bottom: calc( var(--RadioBottomMargin) + 0.10270677 * var(--RadioHeight));
-  margin-left: calc( var(--RadioLeftMargin) + var(--RadioWidth) * 0.6941478);
+  bottom: calc( var(--RadioBottomMargin) + 0.14270677 * var(--RadioHeight));
+  margin-left: calc( var(--RadioLeftMargin) + var(--RadioWidth) * 0.7341478);
   color: white;
   opacity:0.7;
 
@@ -402,11 +405,163 @@ body {
   margin-right: 1%;
 }
 
-:root {
-  --RadioWidth: 50vw;
-  --RadioHeight: 19.88466467vw;
-  --RadioLeftMargin:25vw;
-  --RadioBottomMargin:10vh;
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+   :root {
+    --RadioWidth: 90vw;
+    --RadioHeight: 33.80392994vw;
+    --RadioLeftMargin:5vw;
+    --RadioBottomMargin:60vh;
+  }
+
+  .description{
+   top: 50%;
+    left:5vw;
+    max-width:90vw !important;
+  }
+
+ .subjectiveOuter{
+    font-size: 2.2vw;
+  }
+
+  .nav{
+    font-size: 2vw;
+  }
+
+  #time{
+    font-size: 2.5vw;
+  }
+
+
+  .rate:not(:checked) > label {
+    font-size:3.5vw;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  :root {
+    --RadioWidth: 90vw;
+    --RadioHeight: 33.80392994vw;
+    --RadioLeftMargin:5vw;
+    --RadioBottomMargin:60vh;
+  }
+
+  .description{
+    top: 50%;
+    left:5vw;
+    max-width:90vw !important;
+  }
+
+  .subjectiveOuter{
+    font-size: 2.2vw;
+  }
+
+  .nav{
+    font-size: 2vw;
+  }
+
+  #time{
+    font-size: 2.5vw;
+  }
+
+
+  .rate:not(:checked) > label {
+    font-size:3.5vw;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  :root {
+    --RadioWidth: 90vw;
+    --RadioHeight: 33.80392994vw;
+    --RadioLeftMargin:5vw;
+    --RadioBottomMargin:60vh;
+  }
+
+  .description{
+    top: 50%;
+    left:5vw;
+    max-width:90vw !important;
+  }
+
+  .subjectiveOuter{
+    font-size: 2.2vw;
+  }
+
+  .nav{
+    font-size: 2vw;
+  }
+
+  #time{
+    font-size: 2.5vw;
+  }
+
+
+  .rate:not(:checked) > label {
+    font-size:3.5vw;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  :root {
+    --RadioWidth: 50vw;
+    --RadioHeight: 19.88466467vw;
+    --RadioLeftMargin:25vw;
+    --RadioBottomMargin:10vh;
+  }
+
+  .description{
+    top: 15%;
+    left:1%;
+    max-width:22vw !important;
+  }
+
+  .subjectiveOuter{
+    font-size: 1.2vw;
+  }
+
+  .nav{
+    font-size: 1vw;
+  }
+
+  #time{
+    font-size: 1.5vw;
+  }
+
+  .rate:not(:checked) > label {
+    font-size:1.5vw;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  :root {
+    --RadioWidth: 50vw;
+    --RadioHeight: 19.88466467vw;
+    --RadioLeftMargin:25vw;
+    --RadioBottomMargin:10vh;
+  }
+
+  .description{
+    top: 15%;
+    left:1%;
+    max-width:22vw !important;
+  }
+
+  .subjectiveOuter{
+    font-size: 1.2vw;
+  }
+
+  .nav{
+    font-size: 1vw;
+  }
+
+  #time{
+    font-size: 1.5vw;
+  }
 }
 
 .radio {
@@ -433,7 +588,7 @@ body {
 }
 
 .speaker img {
-  width: 10.49vw;
+  width: calc(0.21785562 * var(--RadioWidth)) !important;
   display: block;
 }
 
@@ -466,7 +621,6 @@ body {
   height: calc(0.28367347 * var(--RadioHeight));
   bottom: calc(var(--RadioBottomMargin) + 0.5 * var(--RadioHeight));
   margin-left: calc(var(--RadioLeftMargin) + 0.3417343 *var(--RadioWidth) );
-  font-size: 1.2vw;
 }
 
 #track{
@@ -478,7 +632,7 @@ body {
   width: 100%;
   bottom: calc(0.37164339 * var(--RadioHeight) + var(--RadioBottomMargin));
   line-height: 34px;
-  margin-left: calc( var(--RadioLeftMargin) + var(--RadioWidth) * 0.6941478);
+  margin-left: calc( var(--RadioLeftMargin) + var(--RadioWidth) * 0.7141478);
   font-size: 1vw;
   font-weight: 400;
   color: white;
@@ -487,7 +641,6 @@ body {
 #time {
   position: absolute;
   text-align: right;
-  font-size: 1.5vw;
   font-weight: 400;
   color: white;
 }
@@ -498,3 +651,9 @@ body {
   margin-left: calc( var(--RadioLeftMargin) + 0.2 * var(--RadioWidth));
   
 }
+
+@keyframes float {
+    0% {transform: translate(0px, 0px);}
+    50%  { transform: translate(5px, 0px);}
+    100%   {transform: translate(0px, 0px);}
+    }

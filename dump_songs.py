@@ -7,6 +7,7 @@ import random, string
 import argparse 
 import psycopg2
 import time
+import pandas.io.sql as sqlio
 from creds import rds_username, rds_password, rds_url
 from creds import rds_port, rds_db
 

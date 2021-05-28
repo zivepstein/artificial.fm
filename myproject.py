@@ -29,17 +29,19 @@ def write2database(conn, table, data):
 	conn.commit()
 	cur.close()
 
-def get_songs(conn):
+def get_songs(conn, local=True):
 	dat = sqlio.read_sql_query("select * from afm_songs", conn)
 	dat['cumcount'] = dat.sample(frac=1).groupby(['dna_artist', 'dna']).cumcount()+1
 	songs = dat.sort_values(['cumcount'])[['url', 'song_id']]
+	if local:
+		songs['url'] = songs['song_id'].map(lambda x: "http://www.artificial.fm/static/music/batch2/{}.wav".format(x))
 	return songs.to_dict('records')
 
 @app.route('/', methods=['GET', 'POST'])
 def bonjour():
     if not 'session_id' in session:
         session['session_id'] = ''.join(random.choice('0123456789ABCDEF') for i in range(16))  # TODO what's this?
-    songs = get_songs(conn)
+    songs = get_songs(conn, local=True)
     print(songs)
     return render_template("index.html", songs = songs)
 

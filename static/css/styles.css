@@ -59,13 +59,33 @@ body {
   background-color: rgba(255,255,255,0.6)
 }
 
+.preferences {
+  position: absolute;
+  width: 100%;
+  max-height: 90% !important;
+  overflow-y: scroll;
+  overflow-y:auto;
+ 
+  line-height: 34px;
+  font-size: 2vw;
+  font-weight: 400;
+  color: black;
+  max-width: 500px;
+  border-style: solid;
+  background-color: rgba(255,255,255,0.6)
+}
 
-#text{
-  margin: 5%;
+
+.textField{
+  margin-top: -3%;
+  margin-bottom: 5%;
+  margin-left: 3%;
+  margin-right: 3%;
   font-size: 65%;
   line-height: normal;
   text-align: left;
 }
+
 .controlsInner {
   position: absolute;
   height: calc(0.16541353 * var(--RadioHeight));
@@ -383,8 +403,16 @@ body {
 
 .nav{
   position: absolute;
-  bottom: calc( var(--RadioBottomMargin) + 0.14270677 * var(--RadioHeight));
-  margin-left: calc( var(--RadioLeftMargin) + var(--RadioWidth) * 0.7341478);
+  top: 1%;
+  margin-left: 1%;
+  color: black;
+  font-size: 3vw;
+}
+
+.pref_button{
+  position: absolute;
+  bottom: calc( var(--RadioBottomMargin) + 0.12270677 * var(--RadioHeight));
+  margin-left: calc( var(--RadioLeftMargin) + var(--RadioWidth) * 0.7141478);
   color: white;
   opacity:0.7;
 
@@ -416,6 +444,12 @@ body {
 
   .description{
    top: 50%;
+    left:5vw;
+    max-width:90vw !important;
+  }
+
+   .preferences{
+   top: 5%;
     left:5vw;
     max-width:90vw !important;
   }
@@ -453,6 +487,12 @@ body {
     max-width:90vw !important;
   }
 
+   .preferences{
+   top: 50%;
+    left:5vw;
+    max-width:90vw !important;
+  }
+
   .subjectiveOuter{
     font-size: 2.2vw;
   }
@@ -481,7 +521,13 @@ body {
   }
 
   .description{
-    top: 50%;
+    top:50%;
+    left:5vw;
+    max-width:90vw !important;
+  }
+
+   .preferences{
+   top: 50%;
     left:5vw;
     max-width:90vw !important;
   }
@@ -519,12 +565,18 @@ body {
     max-width:22vw !important;
   }
 
+  .preferences{
+    top: 5%;
+    left:76vw;
+    max-width:22vw !important;
+  }
+
   .subjectiveOuter{
     font-size: 1.2vw;
   }
 
   .nav{
-    font-size: 1vw;
+    font-size: 2vw;
   }
 
   #time{
@@ -551,12 +603,18 @@ body {
     max-width:22vw !important;
   }
 
+  .preferences{
+    top: 5%;
+    left:76vw;
+    max-width:22vw !important;
+  }
+
   .subjectiveOuter{
     font-size: 1.2vw;
   }
 
   .nav{
-    font-size: 1vw;
+    font-size: 2vw;
   }
 
   #time{
@@ -630,7 +688,7 @@ body {
 #title {
   position: absolute;
   width: 100%;
-  bottom: calc(0.37164339 * var(--RadioHeight) + var(--RadioBottomMargin));
+  bottom: calc(0.39164339 * var(--RadioHeight) + var(--RadioBottomMargin));
   line-height: 34px;
   margin-left: calc( var(--RadioLeftMargin) + var(--RadioWidth) * 0.7141478);
   font-size: 1vw;
@@ -657,3 +715,49 @@ body {
     50%  { transform: translate(5px, 0px);}
     100%   {transform: translate(0px, 0px);}
     }
+
+input[type=range] {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: black;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: rgb(180,100,41); /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.pref_button img {
+  width: calc(0.4 * var(--RadioHeight)) !important;
+  display: block;
+  opacity:1;
+}
+
+
+
+
+/* style datalist */
+input[type=range] + datalist {
+    display: block;
+    margin-top: -4px;
+}
+input[type=range] + datalist option {
+    display: inline-block;
+    width: calc((100% - 12px) / (var(--list-length) - 1));
+    text-align: center;
+}
+input[type=range] + datalist option:first-child {
+    width: calc((100% - 12px) / 2);
+    text-align: left;
+}
+input[type=range] + datalist option:last-child {
+    width: calc((100% - 12px) / 2);
+    text-align: right;
+}

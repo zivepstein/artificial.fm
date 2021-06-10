@@ -10,6 +10,10 @@ import time
 import pandas.io.sql as sqlio
 from creds import rds_username, rds_password, rds_url
 from creds import rds_port, rds_db
+from utils import apply_fadeout
+import librosa
+import numpy
+import soundfile
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--src", type=str, help="data source", default="afm_songs")
@@ -24,8 +28,16 @@ if args.src == 'afm_songs':
 	    password=rds_password)
 	query = "select * from afm_songs"
 	dat = sqlio.read_sql_query(query, conn)
-	for i,r in dat.iterrows():		
-		urllib.request.urlretrieve(r['url'], '/home/host/myproject/static/music/batch2/{}.wav'.format(r['song_id'])) #todo: name songs as song_id instead of url
+	for i,r in dat.iterrows():
+		local_url = '/home/host/myproject/static/music/batch2/{}.wav'.format(r['song_id'])
+		urllib.request.urlretrieve(r['url'], local_url) #todo: name songs as song_id instead of url
+		orig, sr = librosa.load(local_url, duration=50.0)
+		out = orig.copy()
+		apply_fadeout(out, sr, duration=2.0)
+
+		#soundfile.write('original.wav', orig, samplerate=sr)
+		soundfile.write(local_url, out, samplerate=sr)
+
 elif args.src == "sheets":
 	scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 	creds = ServiceAccountCredentials.from_json_keyfile_name('creds.json', scope)

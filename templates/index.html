@@ -69,22 +69,74 @@
   <div class = "subjectiveOuter" id = "query">
     <p id = "modality">Welcome to Artifical.fm. Click play to begin...</p>
      <div class="rate" style= "display:none;">
-        <input type="radio" id="star" name="rate" value="5" />
-        <label for="star5" title="text" class = "clickable">5 stars</label>
-        <input type="radio" id="star" name="rate" value="4" />
-        <label for="star4" title="text"  class = "clickable">4 stars</label>
-        <input type="radio" id="star" name="rate" value="3" />
-        <label for="star3" title="text"  class = "clickable">3 stars</label>
         <input type="radio" id="star" name="rate" value="2" />
-        <label for="star2" title="text"  class = "clickable">2 stars</label>
+        <label for="star5" title="text" class = "clickable">5 stars</label>
         <input type="radio" id="star" name="rate" value="1" />
+        <label for="star4" title="text"  class = "clickable">4 stars</label>
+        <input type="radio" id="star" name="rate" value="0" />
+        <label for="star3" title="text"  class = "clickable">3 stars</label>
+        <input type="radio" id="star" name="rate" value="-1" />
+        <label for="star2" title="text"  class = "clickable">2 stars</label>
+        <input type="radio" id="star" name="rate" value="-2" />
         <label for="star1" title="text"  class = "clickable">1 star</label>
       </div>
   </div>
   
   <div class = "description" style=  "display:none;">
-    <img src = "{{ url_for('static', filename='img/close.png')}}" width = "5%" id = "close_button">
-    <div id = "text">
+    <img src = "{{ url_for('static', filename='img/close.png')}}" width = "5%" id = "close_button1">
+    <div id = "text" class="textField">
+    </div>
+  </div>
+
+  <div class = "preferences" style=  "display:none;">
+    <img src = "{{ url_for('static', filename='img/close.png')}}" width = "5%" id = "close_button2">
+    <div  class="textField">
+      <p>The outputs of artificial.fm evolve to fit your preferences. One way this happens is through your ratings on current songs. Help dictate how artificial.fm uses this information with your preferences below:  </p>
+      <br>
+      Do you want the next song to be different from the last?
+      <div class="slidecontainer">
+        <input type="range" min="-2" max="2" value="2" class="slider" id="different" list="sim-datalist" question = "novelty">
+        <datalist id="sim-datalist" style="--list-length: 2;">
+          <option>Similar</option>
+          <option>Different</option>
+        </datalist>
+      </div>
+      <br>
+      Do you want happy music?
+      <div class="slidecontainer">
+        <input type="range" min="-2" max="2" value="0" class="slider" id="happy" list="happy-datalist" question="How happy is this song?">
+        <datalist id="happy-datalist" style="--list-length: 2;">
+          <option>Sad</option>
+          <option>Happy</option>
+        </datalist>
+      </div>
+      <br>
+      Do you want danceable music?
+      <div class="slidecontainer">
+        <input type="range" min="-2" max="2" value="0" class="slider" id="danceable" list="danceable-datalist" question = "How danceable is this song?">
+        <datalist id="danceable-datalist" style="--list-length: 2;">
+          <option>Nope</option>
+          <option>Danceable</option>
+        </datalist>
+      </div>
+      <br>
+      Do you want artificial music?
+      <div class="slidecontainer">
+        <input type="range" min="-2" max="2" value="0" class="slider" id="artificial" list="artificial-datalist" question = "How artificial is this song?">
+        <datalist id="artificial-datalist" style="--list-length: 2;">
+          <option>Natural</option>
+          <option>Artificial</option>
+        </datalist>
+      </div>
+      <br>
+      Do you want upbeat music?
+      <div class="slidecontainer">
+        <input type="range" min="-2" max="2" value="0" class="slider" id="upbeat" list="upbeat-datalist" question = "How upbeat is this song?">
+        <datalist id="upbeat-datalist" style="--list-length: 2;">
+          <option>Chill</option>
+          <option>Upbeat</option>
+        </datalist>
+      </div>
     </div>
   </div>
 
@@ -92,50 +144,128 @@
     <span id= "about" class = "navButton">about</span> | <span id = "terms" class = "navButton">terms</span>
   </div>
 
+  <div class = "pref_button">
+
+    <img src = "{{ url_for('static', filename='img/prefs.png')}}">
+    toggle preferences
+  </div>
+
   <!-- Scripts -->
   <script src="{{ url_for('static', filename='js/howler.core.js')}}"></script>
   <script src="{{ url_for('static', filename='js/siriwave.js')}}"></script>
   <script src="{{ url_for('static', filename='js/player.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/utils.js')}}"></script>
   <script>
 
+    var num_started = 1;
+
+    var next_song = function(x){
+      var current_id = songList[parseInt(x)]['song_id'];
+      $("#modality").attr("song_id" , current_id);
+      var local_questions = JSON.parse(JSON.stringify(questions))
+      local_questions = local_questions.sort(() => Math.random() - 0.5)
+
+      $("#modality").text(local_questions[0]);
+      $(".subjectiveOuter").removeClass('magictime boingOutDown');
+      $(".subjectiveOuter").addClass('magictime boingInUp');
+      state['question_number'] = 0;
+      var params = {'song_id' : current_id,
+                    'song_order' :num_started , 
+                    "pref_novelty": state['preferences']["novelty"],
+                    "pref_happy": state['preferences']["How happy is this song?"],
+                    "pref_danceable": state['preferences']["How danceable is this song?"],
+                    "pref_artifical": state['preferences']["How artificial is this song?"],
+                    "pref_upbeat": state['preferences']["How upbeat is this song?"]}
+      
+        $.ajax({
+        type: "POST",
+        url: "next_song",
+        data: params,
+        success: function(data){
+          console.log(data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+          console.log("Status: " + textStatus); alert("Error: " + errorThrown);
+        }
+      });
+
+      num_started+=1;
+    }
+
     var has_started = false;
+
+    var dmat = {{ adj_mat | tojson }};// .fill(new Array(rows));
+
+    console.log(dmat);
 
     var songList = {{ songs | tojson }};
     console.log(songList);
 
+    var default_ratings = {"How happy is this song?" : 0 ,
+                            "How danceable is this song?" : 0,
+                            "How artificial is this song?" : 0, 
+                            "How upbeat is this song?":0, 
+                            "How much do you like this song?" : 0,
+                            "novelty" : 1
+                          }
+    var state = {"all_songs":  [],
+              "played_so_far" : [0],
+            "preferences": {"How happy is this song?" : 0 ,
+                            "How danceable is this song?" : 0,
+                            "How artificial is this song?" : 0, 
+                            "novelty":2,
+                            "How upbeat is this song?":0, 
+                            "How much do you like this song?" : 1
+                          },
+            "ratings" : default_ratings,
+            'question_number': 0
+            }
+
     player_data = [];
     for (var i = 0; i < songList.length; i++) {
         var data = {"title" :i, 'file': songList[i]['url'], "howl":null};
-        player_data.push(data)
+        player_data.push(data);
+        state['all_songs'].push(i);
     }
     console.log(player_data)
     var player = new Player(player_data);
     addListeners();
 
-    var questions = ["How happy is this song?","How danceable is this song?","How artificial is this song?", "How clear are the lyrics?", "How instrumental is this song?", "How upbeat is this song?"]
+    var questions = ["How happy is this song?","How danceable is this song?","How artificial is this song?", "How clear are the lyrics?", "How instrumental is this song?", "How upbeat is this song?", "How much do you like this song?"]
 
-    $("#modality").attr("song_id" , songList[0]['song_id']);
+    next_song(0);
     var local_questions = JSON.parse(JSON.stringify(questions))
     local_questions = local_questions.sort(() => Math.random() - 0.5)
-    console.log(local_questions);
 
     $( "#terms" ).click(function() {
       $( ".description" ).show();
+      $(".description").addClass('magictime spaceInUp');
       $( "#text" ).html("<p>Artificial.fm is an MIT research project. All interactions will be collected for research purposes. All data for research is collected anonymously. For questions, please contact artificialfm@mit.edu.<br><br> If you are under 18 years old, you need consent from your parents to use Artificial.fm.</p>");
+    });
+
+    $( ".pref_button" ).click(function() {
+      $( ".preferences" ).show()
+      $(".preferences").addClass('magictime spaceInLeft');
     });
 
    $( "#about" ).click(function() {
     $( ".description" ).show();
-      $( "#text" ).html("<p>Artificial.fm is an experimental platform that explores a new medium: AI radio. Developed by the MIT Media Lab, the platform hosts stations that play songs generated by AI. These AI-generated songs are made in a collaboration between up-and-coming musicians, a deep neural network, and crowdsourced rating labels. In addition to listening to this new kind of music, users can also provide feedback on the generated songs, thus helping the AI learn to generate better music in the future.</p><br><p>The system relies on ratings to improve itself, so enjoy the music, and provide feedback when you can!</p><br><br> <p>If you are a musician and would like to collaborate with artificial.fm, please contact us at artificialfm@mit.edu</p>");
+    $(".description").addClass('magictime spaceInUp');
+      $( "#text" ).html("<p>Artificial.fm is an experimental platform that explores a new medium: AI radio. Developed by the MIT Media Lab, the platform hosts stations that play songs generated by AI. These AI-generated songs are made in a collaboration between up-and-coming musicians, a deep neural network, and crowdsourced rating labels. In addition to listening to this new kind of music, users can also provide feedback on the generated songs, thus helping the AI learn to generate better music in the future.</p><br><p>The system relies on ratings to improve itself, so enjoy the music, and provide feedback when you can! It also uses these ratings to personally curate the music it plays for you, which you can contorl with the toggle preferences panel.</p><br><br> <p>If you are a musician and would like to collaborate with artificial.fm, please contact us at artificialfm@mit.edu</p>");
     });
 
     $( "#getinvolved" ).click(function() {
       $( ".description" ).show();
+      $(".description").addClass('magictime spaceInLeft');
       $( "#text" ).html("If you are a musician and would like to collaborate with artificial.fm, please contact us at artificialfm@mit.edu");
     });
 
-    $( "#close_button" ).click(function() {
+    $( "#close_button1" ).click(function() {
       $( ".description" ).hide();
+    });
+
+    $( "#close_button2" ).click(function() {
+      $( ".preferences" ).hide();
     });
 
     $( "#playBtn" ).click(function() {
@@ -146,31 +276,31 @@
 
     });
 
-    var next_song = function(x){
-      var current_id = songList[parseInt(x)]['song_id'];
-      $("#modality").attr("song_id" , current_id);
-      var local_questions = JSON.parse(JSON.stringify(questions))
-      local_questions = local_questions.sort(() => Math.random() - 0.5)
-
-      $("#modality").text(local_questions[0]);
-      $(".subjectiveOuter").removeClass('magictime spaceOutLeft');
-      $(".subjectiveOuter").addClass('magictime spaceInRight');
-    }
+    $('input[type=range]').on('input', function () {
+      var newval=$(this).val();
+      var q = $(this).attr('question');
+      state['preferences'][q] = newval
+    });
 
     $( ".clickable" ).click(function() {
+      var question = $("#modality").text()
+      var response = this.textContent.charAt(0)
+      state['ratings'][question] = response;
+      state['question_number']+=1
 
-      var params = {'song_id' : $("#modality").attr("song_id"),'question' : $("#modality").text(), "response" : this.textContent.charAt(0)}
-            $.ajax({
-            type: "POST",
-            url: "user_response",
-            data: params,
-            success: function(data){
-              console.log(data);
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-              console.log("Status: " + textStatus); alert("Error: " + errorThrown);
-            }
-          });
+      var params = {'song_id' : $("#modality").attr("song_id"),'question' :question , "response" : response, "order": state['question_number'], "time":player.currentTime}
+      
+        $.ajax({
+        type: "POST",
+        url: "user_response",
+        data: params,
+        success: function(data){
+          console.log(data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+          console.log("Status: " + textStatus); alert("Error: " + errorThrown);
+        }
+      });
       setTimeout(function(){
         $(".subjectiveOuter").addClass('magictime boingOutDown');
 
@@ -187,6 +317,47 @@
        }, 1500);
     } );
 
+
+
+  var feed = function(current_song){
+    var unplayed_options = state['all_songs'].filter(x => !state['played_so_far'].includes(x))
+    var candidate = generate_candidate(unplayed_options, current_song, state['preferences'], state['ratings'])
+    state['played_so_far'].push(candidate);
+    state['ratings'] = default_ratings;
+     return candidate
+  }
+
+  var generate_candidate = function(options, current_song, preferences, ratings ){
+    var qs = Object.keys(state['preferences']);
+    var Q = 0;
+    for (var i = 0; i < qs.length; i++) {
+      Q+=preferences[qs[i]]*ratings[qs[i]];
+      console.log(qs[i])
+      console.log(preferences[qs[i]]);
+      console.log(ratings[qs[i]]);
+    }
+    console.log(Q);
+    var ps = []
+    var tot = 0
+    for (var i = 0; i < options.length; i++) {
+      var d = dmat[current_song][options[i]];
+      ps.push(Math.pow(d,Q));
+      tot+=Math.pow(d,Q);
+    }
+    
+    console.log(ps);
+    var to_play = sample(ps, tot)
+    return to_play;
+  }
+
+  var sample = function(ps, tot){
+    var r = Math.random();
+    var sum = 0
+    for (var i = 0; i < ps.length; i++) {
+      sum += ps[i] / tot;
+      if (r <= sum) return i;
+    }
+  }
   </script>
 </body>
 </html>

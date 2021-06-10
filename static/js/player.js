@@ -43,6 +43,7 @@ Player.prototype = {
    * @param  {Number} index Index of the song in the playlist (leave empty to play the first or current).
    */
   play: function(index) {
+    console.log(index)
     var self = this;
     var sound;
     
@@ -82,7 +83,9 @@ Player.prototype = {
           // Stop the wave animation.
           // wave.container.style.display = 'none';
           bar.style.display = 'block';
-          self.skip('next');
+          var next_index =  feed(index);
+          self.skipTo(next_index);
+          next_song(next_index)
         },
         onpause: function() {
           // Stop the wave animation.
@@ -227,6 +230,7 @@ Player.prototype = {
     // Determine our current seek position.
     var seek = sound.seek() || 0;
     timer.innerHTML = self.formatTime(Math.round(seek));
+    this.currentTime = self.formatTime(Math.round(seek));
     progress.style.width = (((seek / sound.duration()) * 100) || 0) + '%';
 
     // If the sound is still playing, continue stepping.
@@ -341,3 +345,17 @@ volume.addEventListener('touchmove', move);
 }
 
 addListeners();
+
+var next_song = function(x){
+      console.log("next song is....")
+      console.log(x)
+      var current_id = songList[parseInt(x)]['song_id'];
+      $("#modality").attr("song_id" , current_id);
+      var local_questions = JSON.parse(JSON.stringify(questions))
+      local_questions = local_questions.sort(() => Math.random() - 0.5)
+
+      $("#modality").text(local_questions[0]);
+      $(".subjectiveOuter").removeClass('magictime boingOutDown');
+      $(".subjectiveOuter").addClass('magictime boingInUp');
+      state['question_number'] = 0;
+    }

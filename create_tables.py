@@ -14,7 +14,7 @@ conn = psycopg2.connect(
 conn.set_session(autocommit=True)
 
 songs = """
-    CREATE TABLE afm_songs (
+    CREATE TABLE afm_songs_prod (
         time_stamp      timestamp,
         song_id         varchar(256),
         run_id          varchar(256),
@@ -97,11 +97,11 @@ songs_cov = """
 
 if __name__ == '__main__':
     cur = conn.cursor()
-    #cur.execute("DROP TABLE gg_view;")
+    # cur.execute("DROP TABLE afm_songs;")
 
-    #cur.execute(songs_cov)
+    cur.execute(songs)
     #cur.execute(ratings)
-    cur.execute(path)
+    # cur.execute(path)
     
     conn.commit()
     cur.close()

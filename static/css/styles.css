@@ -712,7 +712,7 @@ body {
 
 @keyframes float {
     0% {transform: translate(0px, 0px);}
-    50%  { transform: translate(5px, 0px);}
+    50%  { transform: translate(15px, 0px);}
     100%   {transform: translate(0px, 0px);}
     }
 

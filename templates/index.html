@@ -162,8 +162,11 @@
     var next_song = function(x){
       var current_id = songList[parseInt(x)]['song_id'];
       $("#modality").attr("song_id" , current_id);
+
       var local_questions = JSON.parse(JSON.stringify(questions))
       local_questions = local_questions.sort(() => Math.random() - 0.5)
+
+      state['questions_remaining'] = local_questions;
 
       $("#modality").text(local_questions[0]);
       $(".subjectiveOuter").removeClass('magictime boingOutDown');
@@ -200,6 +203,9 @@
 
     var songList = {{ songs | tojson }};
     console.log(songList);
+    
+
+    var questions = ["How happy is this song?","How danceable is this song?","How artificial is this song?", "How clear are the lyrics?", "How instrumental is this song?", "How upbeat is this song?", "How much do you like this song?"]
 
     var default_ratings = {"How happy is this song?" : 0 ,
                             "How danceable is this song?" : 0,
@@ -208,6 +214,10 @@
                             "How much do you like this song?" : 0,
                             "novelty" : 1
                           }
+
+    var local_questions = JSON.parse(JSON.stringify(questions))
+    local_questions = local_questions.sort(() => Math.random() - 0.5)
+
     var state = {"all_songs":  [],
               "played_so_far" : [0],
             "preferences": {"How happy is this song?" : 0 ,
@@ -218,7 +228,8 @@
                             "How much do you like this song?" : 1
                           },
             "ratings" : default_ratings,
-            'question_number': 0
+            'question_number': 0,
+            "questions_remaining": local_questions
             }
 
     player_data = [];
@@ -231,11 +242,6 @@
     var player = new Player(player_data);
     addListeners();
 
-    var questions = ["How happy is this song?","How danceable is this song?","How artificial is this song?", "How clear are the lyrics?", "How instrumental is this song?", "How upbeat is this song?", "How much do you like this song?"]
-
-    
-    var local_questions = JSON.parse(JSON.stringify(questions))
-    local_questions = local_questions.sort(() => Math.random() - 0.5)
 
     $( "#terms" ).click(function() {
       $( ".description" ).show();
@@ -286,6 +292,7 @@
     });
 
     $( ".clickable" ).click(function() {
+      console.log(state['questions_remaining'])
       var question = $("#modality").text()
       var response = this.textContent.charAt(0)
       state['ratings'][question] = response;
@@ -310,8 +317,8 @@
       }, 500);
 
        setTimeout(function(){ 
-        if (local_questions.length>0){
-          var q  = local_questions.pop()
+        if (state['questions_remaining'].length>0){
+          var q  = state['questions_remaining'].pop()
           $("#modality").text(q);
           $(".subjectiveOuter").removeClass('magictime boingOutDown');
           $(".subjectiveOuter").addClass('magictime boingInUp');

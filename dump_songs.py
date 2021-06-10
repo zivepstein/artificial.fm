@@ -30,14 +30,14 @@ if args.src == 'afm_songs':
 	query = "select * from afm_songs"
 	dat = sqlio.read_sql_query(query, conn)
 	for i,r in dat.iterrows():
-		local_url = '/home/host/myproject/static/music/batch2/{}.wav'.format(r['song_id'])
+		local_url = '/home/host/myproject/static/music/batch3/{}.wav'.format(r['song_id'])
 		urllib.request.urlretrieve(r['url'], local_url) #todo: name songs as song_id instead of url
 		orig, sr = librosa.load(local_url, duration=50.0)
 		out = orig.copy()
 		apply_fadeout(out, sr, duration=args.fadeout)
-
 		#soundfile.write('original.wav', orig, samplerate=sr)
 		soundfile.write(local_url, out, samplerate=sr)
+		print("dumped and trimmed {}...".format(r['song_id']))
 
 elif args.src == "sheets":
 	scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']

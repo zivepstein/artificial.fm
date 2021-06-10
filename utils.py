@@ -17,7 +17,7 @@ def apply_fadeout(audio, sr, duration=3.0):
 
     # compute fade out curve
     # linear fade
-    fade_curve = numpy.linspace(1.0, 0.0, length)
+    fade_curve = np.linspace(1.0, 0.0, length)
 
     # apply the curve
     audio[start:end] = audio[start:end] * fade_curve

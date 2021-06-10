@@ -17,6 +17,7 @@ import soundfile
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--src", type=str, help="data source", default="afm_songs")
+parser.add_argument("--fadeout", type=float, help="data source", default=2.0)
 args = parser.parse_args()
 
 if args.src == 'afm_songs':
@@ -33,7 +34,7 @@ if args.src == 'afm_songs':
 		urllib.request.urlretrieve(r['url'], local_url) #todo: name songs as song_id instead of url
 		orig, sr = librosa.load(local_url, duration=50.0)
 		out = orig.copy()
-		apply_fadeout(out, sr, duration=2.0)
+		apply_fadeout(out, sr, duration=args.fadeout)
 
 		#soundfile.write('original.wav', orig, samplerate=sr)
 		soundfile.write(local_url, out, samplerate=sr)

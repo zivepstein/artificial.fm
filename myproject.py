@@ -38,7 +38,7 @@ def get_songs(conn, local=True):
     ordered_songs = dat.sort_values(['cumcount'])
     songs = ordered_songs[['url', 'song_id']]
     if local:
-        songs['url'] = songs['song_id'].map(lambda x: "http://www.artificial.fm/static/music/batch2/{}.wav".format(x))
+        songs['url'] = songs['song_id'].map(lambda x: "http://www.artificial.fm/static/music/batch3/{}.wav".format(x))
     features = ordered_songs[ordered_songs.columns[-28:-1]]
     #adj_mat = sklearn.metrics.pairwise_distances(features).tolist()
     adj_mat = compute_adj_mat(features)

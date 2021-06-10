@@ -233,7 +233,7 @@
 
     var questions = ["How happy is this song?","How danceable is this song?","How artificial is this song?", "How clear are the lyrics?", "How instrumental is this song?", "How upbeat is this song?", "How much do you like this song?"]
 
-    next_song(0);
+    
     var local_questions = JSON.parse(JSON.stringify(questions))
     local_questions = local_questions.sort(() => Math.random() - 0.5)
 
@@ -273,7 +273,10 @@
       $( ".p5Canvas" ).show();
        $("#modality").text(local_questions[0]);
        $("#playBtn").css("animation-name" , "");
-
+       if (!has_started){
+          next_song(0);
+          has_started = true;
+       }
     });
 
     $('input[type=range]').on('input', function () {

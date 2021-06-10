@@ -27,7 +27,7 @@ if args.src == 'afm_songs':
 	    dbname=rds_db,
 	    user=rds_username,
 	    password=rds_password)
-	query = "select * from afm_songs"
+	query = "select * from afm_songs_prod"
 	dat = sqlio.read_sql_query(query, conn)
 	for i,r in dat.iterrows():
 		local_url = '/home/host/myproject/static/music/batch3/{}.wav'.format(r['song_id'])

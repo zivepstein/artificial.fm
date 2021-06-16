@@ -55,7 +55,7 @@ path = """
     """
 
 songs_cov = """
-    CREATE TABLE afm_songs_cov (
+    CREATE TABLE afm_songs_cov_prod (
         time_stamp      timestamp,
         song_id         varchar(256),
         run_id          varchar(256),
@@ -73,7 +73,7 @@ songs_cov = """
         acousticness_genre            float(10),
         instrumentalness_genre            float(10),
         liveness_genre            float(10),
-        valence_genre            float(10),
+        valence_genre            float(10), 
         danceability_artist            float(10),
         energy_artist            float(10),
         key_artist            float(10),
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     cur = conn.cursor()
     # cur.execute("DROP TABLE afm_songs;")
 
-    cur.execute(songs)
+    cur.execute(songs_cov)
     #cur.execute(ratings)
     # cur.execute(path)
     

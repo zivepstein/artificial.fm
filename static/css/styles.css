@@ -45,12 +45,11 @@ body {
 .description {
   position: absolute;
   width: 100%;
+  height: 80% !important;
   max-height: 80% !important;
   overflow-y: scroll;
-  overflow-y:auto;
- 
-  
-  line-height: 34px;
+/*  overflow-y:auto;
+*/  line-height: 34px;
   font-size: 2vw;
   font-weight: 400;
   color: black;

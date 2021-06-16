@@ -33,7 +33,7 @@ def write2database(conn, table, data):
 	cur.close()
 
 def get_songs(conn, local=True):
-    dat = sqlio.read_sql_query("select * from afm_songs_cov", conn)
+    dat = sqlio.read_sql_query("select * from afm_songs_cov_prod", conn)
     dat['cumcount'] = dat.sample(frac=1).groupby(['dna_artist', 'dna']).cumcount()+1
     ordered_songs = dat.sort_values(['cumcount'])
     songs = ordered_songs[['url', 'song_id']]

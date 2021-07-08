@@ -20,6 +20,12 @@ parser.add_argument("--src", type=str, help="data source", default="afm_songs")
 parser.add_argument("--fadeout", type=float, help="data source", default=2.0)
 args = parser.parse_args()
 
+def get_audio_features(path_to_wav_file):
+	'''input: the path to a wav file containing the 25 second song to compute audio features for
+	output: either a json object containing the audio features for the given song, or a path to a json file with that information 
+	'''
+	return {"worked": "not yet"}
+
 if args.src == 'afm_songs':
 	conn = psycopg2.connect(
 	    host=rds_url,
@@ -29,8 +35,8 @@ if args.src == 'afm_songs':
 	    password=rds_password)
 	query = "select * from afm_songs_prod"
 	dat = sqlio.read_sql_query(query, conn)
-elif args.src == "csv":
-	dat = pd.read_csv("path/to/afm_songs_prod.csv")
+else:
+	dat = pd.read_csv(arg.src)
 else:
 	print("{} not supported".format(args.src))
 for i,r in dat.iterrows():
@@ -41,5 +47,7 @@ for i,r in dat.iterrows():
 	apply_fadeout(out, sr, duration=args.fadeout)
 	#soundfile.write('original.wav', orig, samplerate=sr)
 	soundfile.write(local_url, out, samplerate=sr)
+
+	audio_features = get_audio_features(local_url)
 	print("dumped and trimmed {}/{}: {}".format(i, dat.shape[0], r['song_id']))
 

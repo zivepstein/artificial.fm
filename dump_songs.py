@@ -1,7 +1,6 @@
 import gspread
 import urllib.request
 import pandas as pd
-from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import random, string
 import argparse 
